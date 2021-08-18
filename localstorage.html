@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating table by using DOM</title>
+    <script>
+        var arr = new Array();
+        function addData() {
+            getData();
+            arr.push({
+                stdroll: document.getElementById("stdroll").value,
+                sname: document.getElementById("sname").value,
+                saddress: document.getElementById("saddress").value,
+                sphone: document.getElementById("sphone").value,
+                sdob: document.getElementById("sdob").value
+            });
+
+            localStorage.setItem("localData", JSON.stringify(arr));
+            showData();
+        }
+
+        function getData() {
+            var str = localStorage.getItem("localData");
+            if (str != null)
+                arr = JSON.parse(str);
+        }
+        function deleteData() {
+            localStorage.clear()
+        }
+        function showData() {
+            getData();
+
+            var tb1 = document.getElementById("myTable");
+            var x = tb1.rows.length;
+            while (--x) {
+                tb1.deleteRow(x);
+            }
+
+            for (i = 0; i < arr.length; i++) {
+                var r = tb1.insertRow();
+                var cell1 = r.insertCell();
+                var cell2 = r.insertCell();
+                var cell3 = r.insertCell();
+                var cell4 = r.insertCell();
+                var cell5 = r.insertCell();
+
+                cell1.innerHTML = arr[i].stdroll;
+                cell2.innerHTML = arr[i].sname;
+                cell3.innerHTML = arr[i].saddress;
+                cell4.innerHTML = arr[i].sphone;
+                cell5.innerHTML = arr[i].sdob;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form onsubmit="addData(); return false;">
+
+        <input type="text" id="stdroll" pattern="[A-Z][0-9]{3}" placeholder="Student Roll Number" /><br />
+        <input type="text" id="sname" placeholder="Student Name" /><br />
+        <input type="text" id="saddress" placeholder="Student Address" /><br />
+        <input type="number" id="sphone" placeholder="Student Phone number" /><br />
+        <input type="date" id="sdob" placeholder="Date Of Birth" /><br />
+
+        <input type="submit" value="ADD" />
+        <input type="reset" value="Clear" />
+        <input type="delete" value="Delete local storage" onclick="deleteData();" />
+
+    </form>
+    <h3>My Student's Data</h3>
+    <table id="myTable" border='1'>
+        <tr>
+            <th>Student_Roll_No.</th>
+            <th>Student_Name</th>
+            <th>Student_Address</th>
+            <th>Student_Phone_No.</th>
+            <th>Student_DOB</th>
+        </tr>
+    </table>
+    <script>
+        showData();
+    </script>
+
+</body>
+
+</html>
